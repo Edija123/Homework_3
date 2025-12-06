@@ -4,22 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FizzBuzz Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { font-family:sans-serif; background:#f4f4f4; color:#333; margin:0; padding:0; display:flex; flex-direction:column; align-items:center; transition:0.3s; }
+  /* Global Styles */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Roboto', sans-serif; background:#f4f7fa; color:#333; display:flex; flex-direction:column; min-height:100vh; transition: background 0.4s, color 0.4s; }
+
+  /* Dark mode */
   body.dark { background:#1e1e1e; color:#f0f0f0; }
-  header { padding:20px; text-align:center; background:#333; color:white; width:100%; transition:0.3s; }
+
+  header { background:#2c3e50; color:#ecf0f1; padding:20px; text-align:center; transition: background 0.4s, color 0.4s; }
   header.dark { background:#111; color:#f0f0f0; }
-  .controls { margin:20px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; transition:0.3s; }
-  .controls.dark { background:#2a2a2a; padding:15px; border-radius:8px; }
-  .controls input { width:60px; padding:5px; }
-  .controls button { padding:5px 10px; }
-  main { display:grid; gap:5px; width:90%; max-width:1000px; grid-template-columns:repeat(auto-fit, minmax(50px,1fr)); }
-  .box { height:50px; display:flex; justify-content:center; align-items:center; font-weight:bold; border-radius:5px; color:white; }
+  header h1 { font-size:2em; letter-spacing:2px; }
+
+  /* Controls panel */
+  .controls { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:20px auto; padding:15px; border-radius:10px; background:#ffffff; box-shadow:0 4px 8px rgba(0,0,0,0.15); transition:background 0.4s; }
+  .controls.dark { background:#2a2a2a; }
+
+  .controls label { display:flex; flex-direction:column; font-size:14px; color:#555; }
+  .controls.dark label { color:#ccc; }
+
+  .controls input { margin-top:5px; padding:8px; width:70px; border-radius:5px; border:1px solid #ccc; font-size:14px; transition: background 0.4s, color 0.4s; }
+  .controls.dark input { background:#444; color:#f0f0f0; border:1px solid #666; }
+
+  .controls button { padding:8px 14px; font-size:14px; border-radius:5px; border:none; cursor:pointer; font-weight:bold; transition: transform 0.2s, background 0.3s; }
+  .controls button:hover { transform: scale(1.05); }
+
+  #generateBtn { background:#3498db; color:white; }
+  #generateBtn:hover { background:#2980b9; }
+  #clearBtn { background:#e74c3c; color:white; }
+  #clearBtn:hover { background:#c0392b; }
+  #darkModeBtn { background:#e67e22; color:white; }
+  #darkModeBtn:hover { background:#d35400; }
+
+  /* Grid */
+  main { display:grid; gap:10px; width:95%; max-width:1200px; margin:0 auto 30px auto; grid-template-columns:repeat(auto-fit,minmax(60px,1fr)); }
+
+  main .box { height:70px; display:flex; justify-content:center; align-items:center; font-weight:bold; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.15); color:white; font-size:16px; transition: transform 0.3s, box-shadow 0.3s, opacity 0.5s; opacity:0; }
+  main .box.show { opacity:1; }
+  main .box:hover { transform:scale(1.1); box-shadow:0 6px 12px rgba(0,0,0,0.2); }
+
+  /* FizzBuzz colors */
   .fizz { background:#3498db; }
   .buzz { background:#2ecc71; }
   .fizzbuzz { background:#e67e22; }
   .number { background:#7f8c8d; color:black; }
-  body.dark .number { background:#555; color:#f0f0f0; }
+  body.dark main .number { background:#555; color:#f0f0f0; }
+
+  footer { text-align:center; padding:15px 0; font-size:14px; color:#777; transition: color 0.4s; }
+  footer.dark { color:#aaa; }
+
+  @media (max-width:600px){ main .box { height:50px; font-size:14px; } .controls input { width:60px; } }
 </style>
 </head>
 <body>
@@ -27,16 +62,18 @@
 <header><h1>FizzBuzz Generator</h1></header>
 
 <div class="controls" id="controls">
-  Start:<input type="number" id="startValue" value="1" min="1">
-  End:<input type="number" id="endValue" value="100" min="1">
-  Fizz:<input type="number" id="fizzValue" value="3" min="1">
-  Buzz:<input type="number" id="buzzValue" value="5" min="1">
+  <label>Start:<input type="number" id="startValue" value="1" min="1"></label>
+  <label>End:<input type="number" id="endValue" value="100" min="1"></label>
+  <label>Fizz:<input type="number" id="fizzValue" value="3" min="1"></label>
+  <label>Buzz:<input type="number" id="buzzValue" value="5" min="1"></label>
   <button id="generateBtn">Generate</button>
   <button id="clearBtn">Clear</button>
   <button id="darkModeBtn">Toggle Dark Mode</button>
 </div>
 
 <main id="gridContainer"></main>
+
+<footer>&copy; 2025 — FizzBuzz Project by Edija</footer>
 
 <script>
   const main = document.getElementById('gridContainer');
@@ -48,8 +85,8 @@
   const clearBtn = document.getElementById('clearBtn');
   const darkModeBtn = document.getElementById('darkModeBtn');
   const body = document.body;
-  const controls = document.getElementById('controls');
   const header = document.querySelector('header');
+  const controls = document.getElementById('controls');
 
   function generateFizzBuzz(start=1,end=100,fizz=3,buzz=5){
     main.innerHTML='';
@@ -62,6 +99,7 @@
       else if(i%buzz===0){ div.classList.add('buzz'); div.innerText='Buzz'; }
       else { div.classList.add('number'); div.innerText=i; }
       main.appendChild(div);
+      setTimeout(()=>div.classList.add('show'), i*10);
     }
   }
 
