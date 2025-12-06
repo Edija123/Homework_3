@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FizzBuzz Generator</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* Global Styles */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f4f7fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /* Dark mode */
+    body.dark {
+      background: #1e1e1e;
+      color: #f0f0f0;
+    }
+
+    header {
+      background: #2c3e50;
+      color: #ecf0f1;
+      padding: 20px;
+      text-align: center;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    header.dark {
+      background: #111;
+      color: #f0f0f0;
+    }
+
+    header h1 {
+      font-size: 2em;
+      letter-spacing: 2px;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 15px;
+    }
+
+    /* Controls panel */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 25px;
+      background: #ffffff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background 0.4s;
+    }
+    .controls.dark {
+      background: #2a2a2a;
+    }
+
+    .controls label {
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .controls.dark label {
+      color: #ccc;
+    }
+
+    .controls input {
+      margin-top: 4px;
+      padding: 8px;
+      width: 70px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    .controls.dark input {
+      background: #444;
+      color: #f0f0f0;
+      border: 1px solid #666;
+    }
+
+    .controls button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+      background: #3498db;
+      color: white;
+      font-weight: bold;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .controls button:hover {
+      transform: scale(1.05);
+      background: #2980b9;
+    }
+
+    .dark-mode-toggle {
+      background: #e67e22;
+    }
+
+    /* Grid */
+    main {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    }
+
+    main .box {
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+      color: white;
+      font-size: 16px;
+      transition: transform 0.3s, box-shadow 0.3s, opacity 0.5s;
+      opacity: 0;
+    }
+
+    main .box.show {
+      opacity: 1;
+    }
+
+    main .box:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    }
+
+    /* FizzBuzz colors */
+    .fizz { background-color: #3498db; }
+    .buzz { background-color: #2ecc71; }
+    .fizzbuzz { background-color: #e67e22; }
+    .number { background-color: #7f8c8d; color: #000; }
+
+    /* Dark mode adjustments */
+    body.dark main .number { background-color: #555; color: #f0f0f0; }
+
+    footer {
+      text-align: center;
+      padding: 15px 0;
+      font-size: 14px;
+      color: #777;
+      transition: color 0.4s;
+    }
+
+    footer.dark { color: #aaa; }
+
+    @media (max-width: 600px) {
+      main .box { height: 50px; font-size: 14px; }
+      .controls input { width: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <h1>FIZZ BUZZ GENERATOR</h1>
+  </header>
+
+  <div class="container">
+    <div class="controls" id="controls">
+      <label>
+        Start:
+        <input type="number" id="startValue" value="1" min="1"/>
+      </label>
+      <label>
+        End:
+        <input type="number" id="endValue" value="100" min="1"/>
+      </label>
+      <label>
+        Fizz:
+        <input type="number" id="fizzValue" value="3" min="1"/>
+      </label>
+      <label>
+        Buzz:
+        <input type="number" id="buzzValue" value="5" min="1"/>
+      </label>
+      <button id="generateBtn">Generate</button>
+      <button id="clearBtn">Clear</button>
+      <button id="darkModeBtn" class="dark-mode-toggle">Toggle Dark Mode</button>
+    </div>
+
+    <main id="gridContainer">
+      <!-- Divs go here -->
+    </main>
+  </div>
+
+  <footer id="footer">
+    &copy; 2025 — FizzBuzz Project by Edija 
+  </footer>
+
+  <script>
+    const main = document.getElementById('gridContainer');
+    const startInput = document.getElementById('startValue');
+    const endInput = document.getElementById('endValue');
+    const fizzInput = document.getElementById('fizzValue');
+    const buzzInput = document.getElementById('buzzValue');
+    const generateBtn = document.getElementById('generateBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const darkModeBtn = document.getElementById('darkModeBtn');
+    const body = document.body;
+    const header = document.getElementById('header');
+    const controls = document.getElementById('controls');
+    const footer = document.getElementById('footer');
+
+    function generateFizzBuzz(start=1, end=100, fizz=3, buzz=5) {
+      main.innerHTML = '';
+      for (let i = start; i <= end; i++) {
+        const div = document.createElement('div');
+        div.id = 'myid' + i;
+        div.classList.add('box');
+
+        if (i % fizz === 0 && i % buzz === 0) {
+          div.classList.add('fizzbuzz');
+          div.innerText = 'FizzBuzz';
+        } else if (i % fizz === 0) {
+          div.classList.add('fizz');
+          div.innerText = 'Fizz';
+        } else if (i % buzz === 0) {
+          div.classList.add('buzz');
+          div.innerText = 'Buzz';
+        } else {
+          div.classList.add('number');
+          div.innerText = i;
+        }
+
+        main.appendChild(div);
+
+        // Animate div
+        setTimeout(() => div.classList.add('show'), i*10);
+      }
+    }
+
+    generateBtn.addEventListener('click', () => {
+      const start = parseInt(startInput.value) || 1;
+      const end = parseInt(endInput.value) || 100;
+      const fizz = parseInt(fizzInput.value) || 3;
+      const buzz = parseInt(buzzInput.value) || 5;
+      if(start > end) { alert('Start must be <= End'); return; }
+      generateFizzBuzz(start,end,fizz,buzz);
+    });
+
+    clearBtn.addEventListener('click', () => main.innerHTML = '');
+
+    darkModeBtn.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      header.classList.toggle('dark');
+      controls.classList.toggle('dark');
+      footer.classList.toggle('dark');
+    });
+
+    window.onload = () => generateFizzBuzz();
+  </script>
+
+</body>
+</html>
