@@ -6,15 +6,15 @@
 <title>FizzBuzz Generator</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  /* Global Styles */
+  /* Style */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Roboto', sans-serif; background:#f4f7fa; color:#333; display:flex; flex-direction:column; min-height:100vh; transition: background 0.4s, color 0.4s; }
 
-  /* Dark mode */
+  /* Dark mode style */
   body.dark { background:#1e1e1e; color:#f0f0f0; }
 
-  header { background:#2c3e50; color:#ecf0f1; padding:20px; text-align:center; transition: background 0.4s, color 0.4s; }
-  header.dark { background:#111; color:#f0f0f0; }
+  header { background:#03ba74; color:#ecf0f1; padding:20px; text-align:center; transition: background 0.4s, color 0.4s; }
+  header.dark { background:#001c11; color:#f0f0f0; }
   header h1 { font-size:2em; letter-spacing:2px; }
 
   /* Controls panel */
@@ -30,12 +30,12 @@
   .controls button { padding:8px 14px; font-size:14px; border-radius:5px; border:none; cursor:pointer; font-weight:bold; transition: transform 0.2s, background 0.3s; }
   .controls button:hover { transform: scale(1.05); }
 
-  #generateBtn { background:#3498db; color:white; }
-  #generateBtn:hover { background:#2980b9; }
-  #clearBtn { background:#e74c3c; color:white; }
-  #clearBtn:hover { background:#c0392b; }
-  #darkModeBtn { background:#e67e22; color:white; }
-  #darkModeBtn:hover { background:#d35400; }
+  #generateBtn { background:#243dff; color:white; }
+  #generateBtn:hover { background:#001eff; }
+  #clearBtn { background:#ff5441; color:white; }
+  #clearBtn:hover { background:#ff1900; }
+  #darkModeBtn { background:#471ab1; color:white; }
+  #darkModeBtn:hover { background:#1c005f; }
 
   /* Grid */
   main { display:grid; gap:10px; width:95%; max-width:1200px; margin:0 auto 30px auto; grid-template-columns:repeat(auto-fit,minmax(60px,1fr)); }
@@ -45,10 +45,10 @@
   main .box:hover { transform:scale(1.1); box-shadow:0 6px 12px rgba(0,0,0,0.2); }
 
   /* FizzBuzz colors */
-  .fizz { background:#3498db; }
-  .buzz { background:#2ecc71; }
-  .fizzbuzz { background:#e67e22; }
-  .number { background:#7f8c8d; color:black; }
+  .fizz { background:#fc7cf5; }
+  .buzz { background:#6fffab; }
+  .fizzbuzz { background:#ffae66; }
+  .number { background:#acc2c4; color:black; }
   body.dark main .number { background:#555; color:#f0f0f0; }
 
   footer { text-align:center; padding:15px 0; font-size:14px; color:#777; transition: color 0.4s; }
